@@ -1,0 +1,13 @@
+import { RouterProvider } from "react-router-dom";
+
+import router from "../router/router";
+
+const App = () => {
+	return (
+		<div className='bg-zinc-100'>
+			<RouterProvider router={router} />
+		</div>
+	);
+};
+
+export default App;
