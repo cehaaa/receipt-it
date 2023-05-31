@@ -4,7 +4,7 @@ import router from "../router/router";
 
 const App = () => {
 	return (
-		<div className='bg-zinc-100'>
+		<div className='bg-black text-white'>
 			<RouterProvider router={router} />
 		</div>
 	);

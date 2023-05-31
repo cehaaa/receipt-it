@@ -1,12 +1,14 @@
 import { useState, useEffect, useCallback, useContext } from "react";
 
+import { Link } from "react-router-dom";
+
 import AppContext from "../../context/AppContext";
 
 import useGetCurrentUserPlaylistService from "../../services/useGetCurrentUserPlaylistService";
 
-import UserPlaylistCard from "./UserPlaylistCard";
+import CardView from "../CardView/CardView";
 
-const UserPlaylist = () => {
+const UserPlaylistSection = () => {
 	const { currentUserPlaylist, setCurrentUserPlaylist } =
 		useContext(AppContext);
 
@@ -37,13 +39,31 @@ const UserPlaylist = () => {
 	if (isLoading) return <div>Loading...</div>;
 
 	return (
-		<div className='hide-scroll-bar flex w-full gap-x-3 overflow-x-scroll scroll-smooth'>
-			{currentUserPlaylist.items &&
-				currentUserPlaylist.items.map((item, index) => {
-					return <UserPlaylistCard key={index} playlist={item} />;
-				})}
-		</div>
+		<>
+			<div className='flex items-center justify-between'>
+				<div className='text-lg font-medium text-black'>My Playlist Tracks</div>
+
+				<Link to='/top-tracks' className='text-sm'>
+					See more
+				</Link>
+			</div>
+
+			<div className='hide-scroll-bar mt-2 flex w-full gap-x-3 overflow-x-scroll scroll-smooth'>
+				{currentUserPlaylist.items &&
+					currentUserPlaylist.items.map((item, index) => {
+						return (
+							<CardView
+								key={index}
+								image={item.images.length > 0 ? item.images[0].url : ""}
+								imageAlt='playlist cover'
+								title={item.name}
+								subtitle={item.owner.display_name}
+							/>
+						);
+					})}
+			</div>
+		</>
 	);
 };
 
-export default UserPlaylist;
+export default UserPlaylistSection;

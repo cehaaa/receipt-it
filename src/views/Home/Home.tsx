@@ -1,17 +1,22 @@
-import { useState, useEffect, useCallback, useContext } from "react";
+import { useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 import AppContext from "../../context/AppContext";
 
-import useGetProfileService from "../../services/useGetCurrentUserProfileService";
-
 import RenderIf from "../../components/RenderIf/RenderIf";
-import NotConnected from "../../components/NotConnected/NotConnected";
 
 import UserProfileHeader from "../../components/UserProfileHeader/UserProfileHeader";
-import UserPlaylist from "../../components/UserPaylist/UserPlaylist";
+import UserTopTracksSection from "./components/UserTopTracksSection/UserTopTracksSection";
 
 const Home = () => {
+	const navigate = useNavigate();
 	const { isAuthenticated } = useContext(AppContext);
+
+	useEffect(() => {
+		if (!isAuthenticated) {
+			navigate("/not-connected");
+		}
+	});
 
 	return (
 		<>
@@ -19,12 +24,10 @@ const Home = () => {
 				<UserProfileHeader />
 
 				<div className='mt-5'>
-					<UserPlaylist />
+					<UserTopTracksSection />
 				</div>
-			</RenderIf>
 
-			<RenderIf condition={!isAuthenticated}>
-				<NotConnected />
+				<div className='mt-5'>{/* <UserPlaylist /> */}</div>
 			</RenderIf>
 		</>
 	);

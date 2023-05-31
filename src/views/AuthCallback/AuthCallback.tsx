@@ -9,9 +9,10 @@ import AppContext from "../../context/AppContext";
 
 const AuthCallback = () => {
 	const navigate = useNavigate();
-	const { getAccessTokenBody, requestAccessToken } = useAuthService();
 
 	const { setIsAuthenticated } = useContext(AppContext);
+
+	const { getAccessTokenBody, requestAccessToken } = useAuthService();
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 

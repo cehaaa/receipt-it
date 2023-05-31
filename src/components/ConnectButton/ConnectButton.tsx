@@ -9,7 +9,7 @@ const ConnectButton = () => {
 
 	return (
 		<button
-			className='min-h-fit rounded-md bg-primary px-5 py-2 font-medium text-black duration-200 hover:bg-black hover:text-white'
+			className='min-h-fit rounded-md bg-primary px-5 py-2 font-medium text-black duration-200 hover:bg-primary-hover'
 			onClick={authSignIn}>
 			Connect
 		</button>

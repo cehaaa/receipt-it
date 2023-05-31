@@ -5,6 +5,7 @@ import base64encode from "../utils/base64encode";
 export const useAuthService = () => {
 	const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
 	const redirectUri = import.meta.env.VITE_SPOTIFY_REDIRECT_URI;
+	const scope = import.meta.env.VITE_SPOTIFY_SCOPE;
 
 	async function generateCodeChallenge(codeVerifier: string) {
 		const encoder = new TextEncoder();
@@ -17,8 +18,6 @@ export const useAuthService = () => {
 	async function requestUserAuth() {
 		const codeVerifier = generateCodeVerifier(128);
 		const state = generateCodeVerifier(16);
-
-		const scope = "user-read-private user-read-email playlist-read-private";
 
 		localStorage.setItem("code_verifier", codeVerifier);
 

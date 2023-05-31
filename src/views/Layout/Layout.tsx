@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Outlet } from "react-router-dom";
 
 import Container from "../../components/Container/Container";
@@ -8,10 +8,16 @@ import AppContext from "../../context/AppContext";
 
 import { CurrentUserProfile } from "../../interfaces/CurrentUserProfileInterface";
 import { CurrentUserPlaylist } from "../../interfaces/CurrentUserPlaylistInterface";
+import { UserTopTracks } from "../../interfaces/UserTopTrackInterface";
+import { Recommendations } from "../../interfaces/RecommendationsInterface";
 
 const Layout = () => {
 	const [accessToken, setAccessToken] = useState<string>(
 		localStorage.getItem("access_token") || ""
+	);
+
+	const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
+		localStorage.getItem("access_token") ? true : false
 	);
 
 	const [currentUserProfile, setCurrentUserProfile] =
@@ -20,11 +26,24 @@ const Layout = () => {
 	const [currentUserPlaylist, setCurrentUserPlaylist] =
 		useState<CurrentUserPlaylist>({} as CurrentUserPlaylist);
 
-	const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+	const [userTopTracksShortTerm, setUserTopTracksShortTerm] =
+		useState<UserTopTracks>({} as UserTopTracks);
+
+	const [userTopTracksMediumTerm, setUserTopTracksMediumTerm] =
+		useState<UserTopTracks>({} as UserTopTracks);
+
+	const [userTopTracksLongTerm, setUserTopTracksLongTerm] =
+		useState<UserTopTracks>({} as UserTopTracks);
+
+	const [recommendationsTracks, setRecommendationsTracks] =
+		useState<Recommendations>({} as Recommendations);
 
 	const appContextValue = {
 		accessToken,
 		setAccessToken,
+
+		isAuthenticated,
+		setIsAuthenticated,
 
 		currentUserProfile,
 		setCurrentUserProfile,
@@ -32,24 +51,31 @@ const Layout = () => {
 		currentUserPlaylist,
 		setCurrentUserPlaylist,
 
-		isAuthenticated,
-		setIsAuthenticated,
+		userTopTracksShortTerm,
+		setUserTopTracksShortTerm,
+
+		userTopTracksMediumTerm,
+		setUserTopTracksMediumTerm,
+
+		userTopTracksLongTerm,
+		setUserTopTracksLongTerm,
+
+		recommendationsTracks,
+		setRecommendationsTracks,
 	};
 
-	useEffect(() => {
-		if (accessToken) setIsAuthenticated(true);
-	}, [accessToken]);
-
 	return (
-		<AppContext.Provider value={appContextValue}>
-			<Container className='flex min-h-screen flex-col'>
-				<Header />
+		<>
+			<AppContext.Provider value={appContextValue}>
+				<Container className='flex min-h-screen flex-col'>
+					<Header />
 
-				<div className='text-gray-500'>
-					<Outlet />
-				</div>
-			</Container>
-		</AppContext.Provider>
+					<div className='mb-5'>
+						<Outlet />
+					</div>
+				</Container>
+			</AppContext.Provider>
+		</>
 	);
 };
 

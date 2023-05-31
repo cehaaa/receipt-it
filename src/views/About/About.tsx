@@ -1,14 +1,22 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
+import AppButton from "../../components/AppButton/AppButton";
 
 const About = () => {
+	const navigate = useNavigate();
+
+	const clickHandler = () => {
+		navigate("/");
+	};
+
 	return (
 		<>
-			<div className='font-serif text-2xl font-medium text-black'>About</div>
+			<div className='font-serif text-2xl font-medium'>About</div>
 
-			<div className='text-gray-500'>
+			<div className='text-neutral-gray'>
 				<div className='mt-2'>
 					Welcome to{" "}
-					<span className='font-serif text-black underline'>AlbumMemo</span>,
+					<span className='font-serif text-white underline'>AlbumMemo</span>,
 					the ultimate music tool that presents your top 10 most-played tracks
 					from the past month, last 6 months, and all-time in a unique and
 					captivating Receipt-like format. With AlbumMemo, you can dive into
@@ -27,11 +35,13 @@ const About = () => {
 			</div>
 
 			<div className='mt-4'>
-				<Link
+				{/* <Link
 					to='/'
 					className='flex w-fit items-center justify-center rounded-md bg-primary px-5 py-1.5 text-sm font-medium text-black'>
 					Start exploring
-				</Link>
+				</Link> */}
+
+				<AppButton onClick={clickHandler}>Start Exploring</AppButton>
 			</div>
 		</>
 	);

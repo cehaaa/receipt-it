@@ -7,6 +7,14 @@ import About from "../views/About/About";
 
 import AuthCallback from "../views/AuthCallback/AuthCallback";
 
+import TopTracks from "../views/TopTracks/TopTracks";
+import TopTracksShortTerm from "../views/TopTracks/TopTracksShortTerm";
+import TopTracksMediumTerm from "../views/TopTracks/TopTracksMediumTerm";
+import TopTracksLongTerm from "../views/TopTracks/TopTracksLongTerm";
+import TopTracksRecommendations from "../views/TopTracks/TopTracksRecommendations";
+
+import NotConnected from "../views/NotConnected/NotConnected";
+
 export const routes = [
 	{
 		path: "/",
@@ -23,9 +31,38 @@ export const routes = [
 			{
 				path: "/contribute",
 			},
+
+			{
+				path: "/top-tracks",
+				Component: TopTracks,
+				children: [
+					{
+						path: "short-term",
+						Component: TopTracksShortTerm,
+					},
+					{
+						path: "medium-term",
+						Component: TopTracksMediumTerm,
+					},
+					{
+						path: "all-time",
+						Component: TopTracksLongTerm,
+					},
+					{
+						path: "recommendations",
+						Component: TopTracksRecommendations,
+					},
+				],
+			},
+
 			{
 				path: "/callback",
 				Component: AuthCallback,
+			},
+
+			{
+				path: "/not-connected",
+				Component: NotConnected,
 			},
 		],
 	},

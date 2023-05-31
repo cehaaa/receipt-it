@@ -1,62 +1,71 @@
-import { useContext, useEffect, useState, useCallback } from "react";
+import { useContext, useEffect, useCallback } from "react";
 
 import { Link } from "react-router-dom";
 
 import AppContext from "../../context/AppContext";
 
-import useGetCurrentUserProfileService from "../../services/useGetCurrentUserProfileService";
+import useUsersService from "../../services/useUsersService";
 
 const UserProfileHeader = () => {
-	const { isAuthenticated, currentUserProfile, setCurrentUserProfile } =
+	const { currentUserProfile, setCurrentUserProfile, setIsAuthenticated } =
 		useContext(AppContext);
 
-	const { getCurrentUserProfile } = useGetCurrentUserProfileService();
+	const { getCurrentUserProfile } = useUsersService();
 
-	const [isLoading, setIsLoading] = useState<boolean>(false);
-
-	const fetchUserProfile = useCallback(async () => {
-		setIsLoading(true);
-
+	const fetchCurrentUserProfile = useCallback(async () => {
 		try {
 			const response = await getCurrentUserProfile();
 			const data = await response.json();
 
-			setCurrentUserProfile(data);
+			if (data) {
+				setCurrentUserProfile(data);
+				localStorage.setItem("album_memo_user_profile", JSON.stringify(data));
+			}
+
+			if (data.error) {
+				if (data.error.status === 401) {
+					localStorage.removeItem("access_token");
+					localStorage.removeItem("code_verifier");
+					localStorage.removeItem("album_memo_user_profile");
+
+					setIsAuthenticated(false);
+				}
+			}
 		} catch (error) {
 			console.log(error);
 		}
-
-		setIsLoading(false);
 	}, []);
 
 	useEffect(() => {
-		if (Object.keys(currentUserProfile).length === 0 && isAuthenticated)
-			fetchUserProfile();
-	}, [fetchUserProfile, isAuthenticated, currentUserProfile]);
-
-	if (isLoading) return <div>Loading user profile header...</div>;
+		if (Object.keys(currentUserProfile).length === 0) {
+			fetchCurrentUserProfile();
+		}
+	}, []);
 
 	return (
 		<div className='flex items-center justify-between'>
-			<div className='font-serif text-xl'>
-				Welcome, {currentUserProfile.display_name}
+			<div className='text-base text-neutral-gray sm:text-xl'>
+				Welcome,{" "}
+				<Link
+					target='_blank'
+					to={
+						currentUserProfile.external_urls
+							? currentUserProfile.external_urls.spotify
+							: ""
+					}
+					className='cursor-pointer font-semibold text-white hover:underline'>
+					{currentUserProfile.display_name}
+				</Link>{" "}
+				👋
 			</div>
-			<Link
-				target='_blank'
-				// to='/'
-				to={
-					currentUserProfile.external_urls
-						? currentUserProfile.external_urls.spotify
-						: ""
-				}
-				className='h-10 w-10 cursor-pointer overflow-auto rounded-full bg-gray-300'>
+			<div className='h-10 w-10 cursor-pointer overflow-auto rounded-full bg-gray-300'>
 				<img
 					src={
 						currentUserProfile.images ? currentUserProfile.images[0].url : ""
 					}
 					className='duration-200 hover:scale-110'
 				/>
-			</Link>
+			</div>
 		</div>
 	);
 };
