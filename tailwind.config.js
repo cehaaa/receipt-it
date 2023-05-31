@@ -26,5 +26,5 @@ export default {
 			// https://tailwindcss.com/docs/hover-focus-and-other-states#group-hover-and-group-focus
 		},
 	},
-	plugins: [require("@tailwindcss/line-clamp")],
+	// plugins: [require("@tailwindcss/line-clamp")],
 };
