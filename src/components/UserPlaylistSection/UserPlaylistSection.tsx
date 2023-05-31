@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 import AppContext from "../../context/AppContext";
 
-import useGetCurrentUserPlaylistService from "../../services/useGetCurrentUserPlaylistService";
+import usePlaylistsService from "../../services/usePlaylistsService";
 
 import CardView from "../CardView/CardView";
 
@@ -14,7 +14,7 @@ const UserPlaylistSection = () => {
 
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
-	const { getCurrentUserPlaylist } = useGetCurrentUserPlaylistService();
+	const { getCurrentUserPlaylist } = usePlaylistsService();
 
 	const fetchGetCurrentUserPlaylist = useCallback(async () => {
 		setIsLoading(true);

@@ -1,7 +1,5 @@
 import React from "react";
 
-import RenderIf from "../RenderIf/RenderIf";
-
 type CardViewProps = {
 	image?: string;
 	imageAlt?: string;
