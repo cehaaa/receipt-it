@@ -1,5 +1,7 @@
 import { useState, useCallback, useContext, useEffect } from "react";
 
+import { useNavigate } from "react-router-dom";
+
 import AppContext from "../../context/AppContext";
 
 import { TimeRange } from "../../services/useUsersService";
@@ -11,8 +13,13 @@ import TrackDataView from "../../components/TrackDataView/TrackDataView";
 import msToReadableTime from "../../utils/msToReadableTime";
 
 const TopTracksShortTerm = () => {
-	const { userTopTracksShortTerm, setUserTopTracksShortTerm } =
-		useContext(AppContext);
+	const navigate = useNavigate();
+
+	const {
+		userTopTracksShortTerm,
+		setUserTopTracksShortTerm,
+		setIsAuthenticated,
+	} = useContext(AppContext);
 
 	const { getUserTopTracks } = useGetUserTopItemService();
 
@@ -27,6 +34,18 @@ const TopTracksShortTerm = () => {
 			});
 
 			const data = await response.json();
+
+			if (data.error) {
+				if (data.error.status === 401) {
+					localStorage.removeItem("access_token");
+					localStorage.removeItem("code_verifier");
+					localStorage.removeItem("album_memo_user_profile");
+
+					setIsAuthenticated(false);
+
+					navigate("/not-connected");
+				}
+			}
 
 			setUserTopTracksShortTerm(data);
 		} catch (error) {

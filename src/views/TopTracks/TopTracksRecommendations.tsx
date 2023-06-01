@@ -1,5 +1,7 @@
 import { useContext, useEffect, useCallback, useState } from "react";
 
+import { useNavigate } from "react-router-dom";
+
 import AppContext from "../../context/AppContext";
 
 import useGetUserTopItemService, {
@@ -22,11 +24,14 @@ import { TopTracksRecommendationsSuccessModal } from "./components/TopTracksReco
 import msToReadableTime from "../../utils/msToReadableTime";
 
 const TopTracksRecommendations = () => {
+	const navigate = useNavigate();
+
 	const {
 		currentUserProfile,
 		setCurrentUserProfile,
 		recommendationsTracks,
 		setRecommendationsTracks,
+		setIsAuthenticated,
 	} = useContext(AppContext);
 
 	const { getArtist } = useArtistService();
@@ -51,6 +56,18 @@ const TopTracksRecommendations = () => {
 			});
 
 			const data = await response.json();
+
+			if (data.error) {
+				if (data.error.status === 401) {
+					localStorage.removeItem("access_token");
+					localStorage.removeItem("code_verifier");
+					localStorage.removeItem("album_memo_user_profile");
+
+					setIsAuthenticated(false);
+
+					navigate("/not-connected");
+				}
+			}
 
 			return data;
 		} catch (error) {
