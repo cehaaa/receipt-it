@@ -14,6 +14,8 @@ import TopTracksMediumTerm from "../views/TopTracks/TopTracksMediumTerm";
 import TopTracksLongTerm from "../views/TopTracks/TopTracksLongTerm";
 import TopTracksRecommendations from "../views/TopTracks/TopTracksRecommendations";
 
+import Receipt from "../views/Receipt/Receipt";
+
 import NotConnected from "../views/NotConnected/NotConnected";
 
 export const routes = [
@@ -57,6 +59,10 @@ export const routes = [
 				],
 			},
 			{
+				path: "/receipt",
+				Component: Receipt,
+			},
+			{
 				path: "/callback",
 				Component: AuthCallback,
 				query: {
@@ -64,7 +70,6 @@ export const routes = [
 					state: "state",
 				},
 			},
-
 			{
 				path: "/not-connected",
 				Component: NotConnected,
