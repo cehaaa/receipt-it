@@ -13,8 +13,8 @@ const About = () => {
 		<>
 			<div className='font-serif text-2xl font-medium'>About</div>
 
-			<div className='text-neutral-gray'>
-				<div className='mt-2'>
+			<div className='mt-2 text-neutral-gray'>
+				<div>
 					Welcome to{" "}
 					<span className='font-serif text-white underline'>AlbumMemo</span>,
 					the ultimate music tool that presents your top 10 most-played tracks
