@@ -16,10 +16,10 @@ const About = () => {
 			<div className='mt-2 text-neutral-gray'>
 				<div>
 					Welcome to{" "}
-					<span className='font-serif text-white underline'>AlbumMemo</span>,
+					<span className='font-serif text-white underline'>ReceiptIt</span>,
 					the ultimate music tool that presents your top 10 most-played tracks
 					from the past month, last 6 months, and all-time in a unique and
-					captivating Receipt-like format. With AlbumMemo, you can dive into
+					captivating Receipt-like format. With ReceiptIt, you can dive into
 					your music journey and explore your favorite songs like never before.
 				</div>
 
