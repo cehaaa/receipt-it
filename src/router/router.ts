@@ -4,6 +4,7 @@ import Layout from "../views/Layout/Layout";
 
 import Home from "../views/Home/Home";
 import About from "../views/About/About";
+import Contribute from "../views/Contribute/Contribute";
 
 import AuthCallback from "../views/AuthCallback/AuthCallback";
 
@@ -30,6 +31,7 @@ export const routes = [
 			},
 			{
 				path: "/contribute",
+				Component: Contribute,
 			},
 
 			{
@@ -54,10 +56,13 @@ export const routes = [
 					},
 				],
 			},
-
 			{
 				path: "/callback",
 				Component: AuthCallback,
+				query: {
+					code: "code",
+					state: "state",
+				},
 			},
 
 			{
