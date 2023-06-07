@@ -1,62 +1,56 @@
-// import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 
-import { useLocation } from "react-router-dom";
-
-// import useAuthService from "../../services/useAuthService";
+import { useNavigate } from "react-router-dom";
 
 import RenderIf from "../../components/RenderIf/RenderIf";
-// import AppContext from "../../context/AppContext";
+import AppContext from "../../context/AppContext";
+
+import useAuthService from "../../services/useAuthService";
 
 const AuthCallback = () => {
-	const location = useLocation();
+	const navigate = useNavigate();
 
-	console.log(location);
+	const { setIsAuthenticated } = useContext(AppContext);
 
-	// http://localhost:5173/callback?code=AQCahS56-N8fBb6Nn319VukMjXbYEQ5dNkhY5GYruNzHpjA8LMb8TYKp2De4zoe_AMDLwE5RID1nJO80F61H0l-NP1otuZAuFi8iXTQ9xB9vKWBHMfbffmuxq25x1EhSjqzZowkCpuNCwK3YGaYSuuKgks1pS0Zp8d8KMO0J71CLrEQxcdpZmgaKjxJOxk7GohdLMGZ3R1uapHt9t-fN6AHgS93Sqq9Yy_aXENEvifA0lr4NPnArN_RBiNehm84rHRx7my5WIwbd5NhLTnL_6FgzsmPSwQLUNRYHyzaZk7gI9ivBU_cYriI5guSzozBQfypMbPlbYx4w-cN8wDhHSuHm1NBPoqsXqqjtUGbWQ8cTtADMbzoN0MvmCW3_TANPLw7lQbqpoIuR01lzo2cmlg&state=nJphP94jb1y0d5rQ
+	const { getAccessTokenBody, requestAccessToken } = useAuthService();
 
-	// const navigate = useNavigate();
+	const [isLoading, setIsLoading] = useState<boolean>(true);
 
-	// const { setIsAuthenticated } = useContext(AppContext);
+	const fetchAccessToken = useCallback(async () => {
+		setIsLoading(true);
 
-	// const { getAccessTokenBody, requestAccessToken } = useAuthService();
+		try {
+			const payload = getAccessTokenBody();
+			const response = await requestAccessToken(payload);
 
-	// const [isLoading, setIsLoading] = useState<boolean>(true);
+			if (!response.ok) {
+				throw new Error(`HTTP status ${response.status}`);
+			}
 
-	// const fetchAccessToken = useCallback(async () => {
-	// 	setIsLoading(true);
+			const data = await response.json();
 
-	// 	try {
-	// 		const payload = getAccessTokenBody();
-	// 		const response = await requestAccessToken(payload);
+			localStorage.setItem("access_token", data.access_token);
 
-	// 		if (!response.ok) {
-	// 			throw new Error(`HTTP status ${response.status}`);
-	// 		}
+			setIsAuthenticated(true);
 
-	// 		const data = await response.json();
+			navigate("/");
+		} catch (error) {
+			console.error(error);
+		}
 
-	// 		localStorage.setItem("access_token", data.access_token);
+		setIsLoading(false);
+	}, [getAccessTokenBody, navigate, requestAccessToken, setIsAuthenticated]);
 
-	// 		setIsAuthenticated(true);
+	useEffect(() => {
+		fetchAccessToken();
 
-	// 		navigate("/");
-	// 	} catch (error) {
-	// 		console.error(error);
-	// 	}
-
-	// 	setIsLoading(false);
-	// }, [getAccessTokenBody, navigate, requestAccessToken, setIsAuthenticated]);
-
-	// useEffect(() => {
-	// 	fetchAccessToken();
-
-	// 	return () => {
-	// 		setIsLoading(true);
-	// 	};
-	// }, [fetchAccessToken]);
+		return () => {
+			setIsLoading(true);
+		};
+	}, [fetchAccessToken]);
 
 	return (
-		<RenderIf condition={true}>
+		<RenderIf condition={isLoading}>
 			<div>Loading...</div>
 		</RenderIf>
 	);
