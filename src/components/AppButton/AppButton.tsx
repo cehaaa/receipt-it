@@ -28,7 +28,7 @@ const AppButton: React.FC<AppButtonProps> = ({
 
 		const assemble = `${
 			type === "primary" ? primaryClassName : secondaryClassName
-		} rounded-md px-5 py-1.5 text-sm font-medium duration-200`;
+		} rounded-md sm:px-5 sm:py-1.5 text-xs font-medium duration-200 text-sm sm:text-base px-3 py-1 `;
 
 		return assemble;
 	};
