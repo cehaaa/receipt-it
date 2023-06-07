@@ -1,11 +1,14 @@
 import { useCallback, useContext, useEffect, useState, useRef } from "react";
 import { toPng } from "html-to-image";
 
+import { Track } from "../../interfaces/RecommendationsInterface";
+
 import AppContext from "../../context/AppContext";
 
 import useUsersService, { TimeRange } from "../../services/useUsersService";
 
 import msToReadableTime from "../../utils/msToReadableTime";
+import { getTodayDate } from "../../utils/time";
 
 import AppButton from "../../components/AppButton/AppButton";
 
@@ -25,10 +28,13 @@ const Receipt = () => {
 
 	const { getUserTopTracks, getCurrentUserProfile } = useUsersService();
 
+	const { date, day, month, year } = getTodayDate();
+
 	const [selectedTimeRange, setSelectedTimeRange] = useState<TimeRange>(
 		TimeRange.ShortTerm
 	);
 	const receiptContainerRef = useRef<HTMLDivElement>(null);
+	const [totalTime, setTotalTime] = useState<string>("");
 
 	const topTracksMap = {
 		short_term: userTopTracksShortTerm,
@@ -42,6 +48,12 @@ const Receipt = () => {
 			limit: 10,
 		});
 		const data = await response.json();
+
+		const time = data.items.reduce((acc: number, item: Track) => {
+			return acc + item.duration_ms;
+		}, 0);
+
+		setTotalTime(msToReadableTime(time));
 
 		if (selectedTimeRange === TimeRange.ShortTerm) {
 			setUserTopTracksShortTerm(data);
@@ -129,7 +141,9 @@ const Receipt = () => {
 
 					<div className='mt-5 uppercase'>
 						<div>order #0001 for {currentUserProfile.display_name}</div>
-						<div>wednesday, 7 june 2023</div>
+						<div>
+							{day}, {date} {month} {year}
+						</div>
 					</div>
 
 					<div className='mt-2'>
@@ -138,7 +152,7 @@ const Receipt = () => {
 								<tr>
 									<td className='border-spacing-x-10'>qty</td>
 									<td>item</td>
-									<td>amt</td>
+									<td className='text-right'>amt</td>
 								</tr>
 							</thead>
 							<tbody className=' my-6 border-spacing-y-5 border-b-2 border-dashed border-gray-600'>
@@ -148,7 +162,9 @@ const Receipt = () => {
 											<tr key={index}>
 												<td>{(index + 1).toString().padStart(2, "0")}</td>
 												<td>{item.name}</td>
-												<td>{msToReadableTime(item.duration_ms)}</td>
+												<td className='text-right'>
+													{msToReadableTime(item.duration_ms)}
+												</td>
 											</tr>
 										);
 									})}
@@ -158,13 +174,13 @@ const Receipt = () => {
 									<td colSpan={2} className='font-bold'>
 										item count
 									</td>
-									<td>10</td>
+									<td className='text-right'>10</td>
 								</tr>
 								<tr>
 									<td colSpan={2} className='font-bold'>
 										total
 									</td>
-									<td>sum</td>
+									<td className='text-right'>{totalTime}</td>
 								</tr>
 							</tfoot>
 						</table>
