@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+
 import generateCodeVerifier from "../utils/generateCodeVerifier";
 
 import base64encode from "../utils/base64encode";

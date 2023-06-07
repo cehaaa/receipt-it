@@ -2,10 +2,10 @@ import { useCallback, useContext, useEffect, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 
-import useAuthService from "../../services/useAuthService";
-
 import RenderIf from "../../components/RenderIf/RenderIf";
 import AppContext from "../../context/AppContext";
+
+import useAuthService from "../../services/useAuthService";
 
 const AuthCallback = () => {
 	const navigate = useNavigate();
