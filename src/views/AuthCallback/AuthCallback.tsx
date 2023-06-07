@@ -39,7 +39,7 @@ const AuthCallback = () => {
 		}
 
 		setIsLoading(false);
-	}, [getAccessTokenBody, navigate, requestAccessToken, setIsAuthenticated]);
+	}, []);
 
 	useEffect(() => {
 		fetchAccessToken();
