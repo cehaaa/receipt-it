@@ -19,6 +19,10 @@ const navLinks = [
 		path: "/contribute",
 		name: "Contribute",
 	},
+	{
+		path: "/receipt",
+		name: "Receipt",
+	},
 ];
 
 const Header = () => {
@@ -26,7 +30,7 @@ const Header = () => {
 
 	return (
 		<header className='sticky top-0 z-50 flex items-center justify-between bg-black py-5'>
-			<nav className='flex items-center gap-x-2'>
+			<nav className='flex items-center'>
 				{navLinks.map((link, index) => {
 					return <NavLink key={index} name={link.name} path={link.path} />;
 				})}
