@@ -11,6 +11,8 @@ const NavLink: React.FC<NavLinkProps> = ({ path, name }) => {
 
 	const checkIsActive = useCallback(
 		(path: string) => {
+			const pathname = location.pathname;
+
 			if (path === "/") {
 				const childrenMap = {
 					"/top-tracks": true,
@@ -21,7 +23,15 @@ const NavLink: React.FC<NavLinkProps> = ({ path, name }) => {
 					"/top-tracks/recommendations": true,
 				};
 
-				const pathname = location.pathname;
+				if ((childrenMap as any)[pathname]) return true;
+			}
+
+			if (path === "/receipts") {
+				const childrenMap = {
+					"/receipts/short-term": true,
+					"/receipts/medium-term": true,
+					"/receipts/all-time": true,
+				};
 
 				if ((childrenMap as any)[pathname]) return true;
 			}
@@ -38,7 +48,7 @@ const NavLink: React.FC<NavLinkProps> = ({ path, name }) => {
 		const inActiveClassName = "hover:underline text-neutral-gray";
 
 		const defaultClassName =
-			"rounded-md sm:text-sm text-xs sm:px-5 sm:py-1.5 px-3 py-1 min-w-fit flex items-center justify-center font-medium ";
+			"rounded-md sm:text-sm text-xs sm:px-5 sm:py-1.5 px-3 py-1 min-w-fit flex items-center justify-center font-medium";
 
 		const assemble = `${
 			isActive ? activeClassName : inActiveClassName

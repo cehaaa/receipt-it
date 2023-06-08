@@ -14,7 +14,10 @@ import TopTracksMediumTerm from "../views/TopTracks/TopTracksMediumTerm";
 import TopTracksLongTerm from "../views/TopTracks/TopTracksLongTerm";
 import TopTracksRecommendations from "../views/TopTracks/TopTracksRecommendations";
 
-import Receipt from "../views/Receipt/Receipt";
+import Receipts from "../views/Receipts/Receipts";
+import ReceiptShortTerm from "../views/Receipts/ReceiptShortTerm";
+import ReceiptMediumTerm from "../views/Receipts/ReceiptMediumTerm";
+import ReceiptLongTerm from "../views/Receipts/ReceiptLongTerm";
 
 import NotConnected from "../views/NotConnected/NotConnected";
 
@@ -59,8 +62,22 @@ export const routes = [
 				],
 			},
 			{
-				path: "/receipt",
-				Component: Receipt,
+				path: "/receipts",
+				Component: Receipts,
+				children: [
+					{
+						path: "short-term",
+						Component: ReceiptShortTerm,
+					},
+					{
+						path: "medium-term",
+						Component: ReceiptMediumTerm,
+					},
+					{
+						path: "all-time",
+						Component: ReceiptLongTerm,
+					},
+				],
 			},
 			{
 				path: "/callback",

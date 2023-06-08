@@ -20,7 +20,7 @@ const navLinks = [
 		name: "Contribute",
 	},
 	{
-		path: "/receipt",
+		path: "/receipts",
 		name: "Receipt",
 	},
 ];
