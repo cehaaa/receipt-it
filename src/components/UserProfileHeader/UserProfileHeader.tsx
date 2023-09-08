@@ -53,15 +53,18 @@ const UserProfileHeader = () => {
 							? currentUserProfile.external_urls.spotify
 							: ""
 					}
-					className='cursor-pointer font-semibold text-white hover:underline'>
+					className='cursor-pointer font-semibold text-white hover:underline'
+				>
 					{currentUserProfile.display_name}
 				</Link>{" "}
 				👋
 			</div>
-			<div className='h-10 w-10 cursor-pointer overflow-auto rounded-full bg-gray-300'>
+			<div className='h-10 w-10 cursor-pointer overflow-hidden rounded-full bg-gray-300'>
 				<img
 					src={
-						currentUserProfile.images ? currentUserProfile.images[0].url : ""
+						currentUserProfile.images && currentUserProfile.images.length > 0
+							? currentUserProfile.images[0].url
+							: ""
 					}
 					className='duration-200 hover:scale-110'
 				/>
